@@ -15,8 +15,45 @@
             <ul class="nav navbar-nav">
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">登录</a></li>
-                <li><a href="#">注册</a></li>
+                <!-- 登录注册链接开始 -->
+                @guest
+                    <li><a href="{{ route('login') }}">登录</a></li>
+                    <li><a href="{{ route('register') }}">注册</a></li>
+                @else
+                    {{--<li>--}}
+                        {{--<a href="{{ route('cart.index') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a>--}}
+                    {{--</li>--}}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="user-avatar pull-left" style="margin-right:8px; margin-top:-5px;">
+                                <img src="https://lccdn.phphub.org/uploads/avatars/27339_1531466926.jpeg?imageView2/1/w/100/h/100" class="img-responsive img-circle" width="30px" height="30px">
+                            </span>
+                            {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            {{--<li>--}}
+                                {{--<a href="{{ route('user_addresses.index') }}">收货地址</a>--}}
+                            {{--</li>--}}
+                            {{--<li>--}}
+                                {{--<a href="{{ route('orders.index') }}">我的订单</a>--}}
+                            {{--</li>--}}
+                            {{--<li>--}}
+                                {{--<a href="{{ route('products.favorites') }}">我的收藏</a>--}}
+                            {{--</li>--}}
+                            <li>
+                                <a href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                    退出登录
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+            @endguest
+            <!-- 登录注册链接结束 -->
             </ul>
         </div>
     </div>
