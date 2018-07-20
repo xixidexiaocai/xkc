@@ -41,7 +41,7 @@ class ProductsController extends Controller
             $content->body($this->form()->edit($id));
         });
     }
-    
+
 
     /**
      * Create interface.
