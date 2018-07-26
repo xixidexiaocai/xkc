@@ -76,6 +76,12 @@
                             </div>
                             <div>
                                 <span>订单状态：</span>
+                                @if(isset($order->extra['refund_disagree_reason']))
+                                    <div>
+                                        <span>拒绝退款理由：</span>
+                                        <div class="value">{{ $order->extra['refund_disagree_reason'] }}</div>
+                                    </div>
+                                @endif
                                 <div class="value">
                                     @if($order->paid_at)
                                         @if($order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
