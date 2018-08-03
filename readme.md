@@ -1,58 +1,63 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+用例分析
+角色
+信息
+动作
+接下来做单独分解。
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+1. 角色
+在我们的 Laravel Shop 里，将会出现以下角色：
 
-## About Laravel
+游客 —— 没有登录的用户；
+用户 —— 注册用户， 可以购买商品；
+运营 —— 可以上架、下架商品，处理订单；
+管理员 —— 权限最高的用户角色，可以管理运营。
+2. 信息结构
+主要信息有：
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+用户 —— 模型名称 User；
+收货地址 —— 模型名称 UserAddress，包含地址和收货人姓名、电话；
+商品 —— 模型名称 Product，比如 iPhone X 就是一个商品；
+商品 SKU —— 模型名称 ProductSKU，同一商品下有个别属性可能有不同的值，比如 iPhone X 256G 和 iPhone X 64G 就是同一个商品的不同 SKU，每个 SKU 都有各自独立的库存；
+订单 —— 模型名称 Order；
+订单项 —— 模型名称 OrderItem，一个订单会包含一个或多个订单项，每个订单项都会与一个商品 SKU 关联；
+优惠券 —— 模型名称 CouponCode，订单可以使用优惠券来扣减最终需要支付的金额；
+运营人员 —— 模型名称 Operator，管理员也属于运营人员。
+3. 动作
+角色和信息之间的互动称之为『动作』，动作主要有以下几个：
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
-
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+创建 Create
+查看 Read
+编辑 Update
+删除 Delete
+用例
+1.游客
+游客可以查看商品列表；
+游客可以查看单个商品内容。
+2. 用户
+用户可以查看自己的收货地址列表；
+用户可以新增收货地址；
+用户可以修改自己的收货地址；
+用户可以删除自己的收货地址；
+用户可以收藏商品；
+用户可以将商品加入购物车；
+用户可以将购物车中的商品打包下单；
+用户可以在下单时使用优惠券；
+用户可以通过微信、支付宝支付订单；
+用户可以查看自己的订单信息；
+用户可以对已支付的订单申请退款；
+用户可以将已发货的订单标记为确认收货；
+用户可以对已购买的商品发布评价。
+3. 运营
+运营可以看到所有的用户列表；
+运营可以发布商品；
+运营可以编辑商品内容；
+运营可以编辑商品 SKU 及其库存；
+运营可以下架商品；
+运营可以将用户已支付的订单标记为已发货；
+运营可以对申请退款的订单执行退款；
+运营可以创建、编辑、删除优惠券。
+4. 管理员
+管理员可以查看运营人员列表；
+管理员可以新增运营人员；
+管理员可以编辑运营人员；
+管理员可以删除运营人员。

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Exceptions\InvalidRequestException;
 use Carbon\Carbon;
+use App\Events\OrderPaid;
 
 class PaymentController extends Controller
 {
@@ -30,11 +31,32 @@ class PaymentController extends Controller
 
     public function alipayReturn()
     {
-        try {
-            app('alipay')->verify();
-        } catch (\Exception $e) {
-            return view('pages.error', ['msg' => '数据不正确']);
+//        try {
+//            app('alipay')->verify();
+//        } catch (\Exception $e) {
+//            return view('pages.error', ['msg' => '数据不正确']);
+//        }
+        // 校验输入参数
+        $data  = app('alipay')->verify();
+        // $data->out_trade_no 拿到订单流水号，并在数据库中查询
+        $order = Order::where('no', $data->out_trade_no)->first();
+        // 正常来说不太可能出现支付了一笔不存在的订单，这个判断只是加强系统健壮性。
+        if (!$order) {
+            return 'fail';
         }
+        // 如果这笔订单的状态已经是已支付
+        if ($order->paid_at) {
+            // 返回数据给支付宝
+            return app('alipay')->success();
+        }
+
+        $order->update([
+            'paid_at'        => Carbon::now(), // 支付时间
+            'payment_method' => 'alipay', // 支付方式
+            'payment_no'     => $data->trade_no, // 支付宝订单号
+        ]);
+
+        $this->afterPaid($order);
 
         return view('pages.success', ['msg' => '付款成功']);
     }
